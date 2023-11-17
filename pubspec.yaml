@@ -44,6 +44,7 @@ dependencies:
   image_picker: ^1.0.4
   permission_handler: ^11.0.1
   share_plus: ^2.0.4
+  shared_preferences: ^2.2.2
   social_login_buttons: ^1.0.7
   swipe_cards: ^2.0.0+1
   swipe_to: ^1.0.2

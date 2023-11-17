@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:exploreden/models/place_model.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final CardSwiperController controller = CardSwiperController();
+
   late List<Place> places;
   Position? currentPosition;
 
@@ -138,6 +142,17 @@ class _HomePageState extends State<HomePage> {
       body: places.isEmpty
           ? Center(child: CircularProgressIndicator())
           : CardSwiper(
+              onSwipe: (int previousIndex, int? currentIndex,
+                  CardSwiperDirection direction) {
+                if (direction == CardSwiperDirection.left &&
+                    currentIndex != null) {
+                  // Handle card swiping, save to SharedPreferences when swiped left
+                  saveToSharedPreferences(places[currentIndex]);
+                }
+                // Continue with the default behavior
+                return true;
+              },
+              controller: controller,
               cardsCount: places.length,
               cardBuilder: (
                 context,
@@ -172,5 +187,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
     );
+  }
+
+  void saveToSharedPreferences(Place place) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Use a unique key for each location
+    String key = 'location_${DateTime.now().millisecondsSinceEpoch}';
+    prefs.setString(key, place.name);
+    prefs.setString('$key.address', place.address);
+    prefs.setString('$key.photoUrl', place.photoUrl);
   }
 }

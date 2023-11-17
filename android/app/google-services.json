@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "594239498444",
+    "project_id": "explorerden-993a9",
+    "storage_bucket": "explorerden-993a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594239498444:android:231876d499a4181649ba69",
+        "android_client_info": {
+          "package_name": "com.example.exploreden"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVHPk7V2vGsu8MbB7rIejfxccZJ0iBNAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594239498444:android:a153390011b0819749ba69",
+        "android_client_info": {
+          "package_name": "com.example.exploreden_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVHPk7V2vGsu8MbB7rIejfxccZJ0iBNAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

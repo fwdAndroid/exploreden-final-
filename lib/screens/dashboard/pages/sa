@@ -1,0 +1,376 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+void main() {
+  runApp(MyApp());
+}
+
+class Place {
+  final String name;
+  final String photoUrl;
+  final String address;
+  final double latitude;
+  final double longitude;
+  final String placeId;
+  final double rating;
+
+  Place({
+    required this.name,
+    required this.photoUrl,
+    required this.address,
+    required this.latitude,
+    required this.longitude,
+    required this.placeId,
+    required this.rating,
+  });
+}
+
+class Review {
+  final String authorName;
+  final String text;
+  final double rating;
+
+  Review({required this.authorName, required this.text, required this.rating});
+
+  factory Review.fromMap(Map<String, dynamic> map) {
+    return Review(
+      authorName: map['author_name'] ?? '',
+      text: map['text'] ?? '',
+      rating: map['rating'] != null ? map['rating'].toDouble() : 0.0,
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: PlaceSwiperScreen(),
+    );
+  }
+}
+
+class PlaceSwiperScreen extends StatefulWidget {
+  @override
+  _PlaceSwiperScreenState createState() => _PlaceSwiperScreenState();
+}
+
+class _PlaceSwiperScreenState extends State<PlaceSwiperScreen> {
+  late List<Place> places;
+  Position? currentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    places = [];
+    currentPosition = null;
+    _loadPlaces();
+  }
+
+  Future<void> _loadPlaces() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      List<Place> fetchedPlaces = await fetchNearbyTouristAttractions(position);
+
+      setState(() {
+        places = fetchedPlaces;
+        currentPosition = position;
+      });
+    } catch (e) {
+      print('Error loading places: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Nearby Places Swiper'),
+      ),
+      body: places.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : Swiper(
+              itemCount: places.length,
+              layout: SwiperLayout.STACK,
+              itemWidth: MediaQuery.of(context).size.width * 0.8,
+              itemHeight: MediaQuery.of(context).size.height * 0.6,
+              curve: Curves.easeInOut,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PlaceDetailsScreen(place: places[index]),
+                      ),
+                    );
+                  },
+                  child: CardItem(
+                    imageUrl: places[index].photoUrl,
+                    title: places[index].name,
+                    address: places[index].address,
+                    distance: calculateDistance(
+                      currentPosition!.latitude,
+                      currentPosition!.longitude,
+                      places[index].latitude,
+                      places[index].longitude,
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
+class CardItem extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String address;
+  final double distance;
+
+  CardItem({
+    required this.imageUrl,
+    required this.title,
+    required this.address,
+    required this.distance,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  address,
+                  style: TextStyle(fontSize: 14.0),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'Distance: ${distance.toStringAsFixed(2)} km',
+                  style: TextStyle(fontSize: 14.0),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PlaceDetailsScreen extends StatefulWidget {
+  final Place place;
+
+  PlaceDetailsScreen({required this.place});
+
+  @override
+  _PlaceDetailsScreenState createState() => _PlaceDetailsScreenState();
+}
+
+class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
+  late Place _placeDetails;
+  List<Review> _reviews = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _placeDetails = widget.place;
+    // Fetch additional details about the place using the Google Places API
+    _loadPlaceDetails();
+  }
+
+  Future<void> _loadPlaceDetails() async {
+    try {
+      final apiKey = 'YOUR_API_KEY';
+      final url =
+          'https://maps.googleapis.com/maps/api/place/details/json?place_id=${_placeDetails.placeId}&key=$apiKey';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data['status'] == 'OK' && data['result'] != null) {
+          final result = data['result'];
+
+          // Extract additional details from the result
+          double rating = result['rating'] ?? 0.0;
+          List<dynamic> reviewsData = result['reviews'] ?? [];
+          _reviews = reviewsData.map((reviewData) => Review.fromMap(reviewData)).toList();
+
+          // Update the _placeDetails with the extracted details
+          setState(() {
+            _placeDetails = Place(
+              name: _placeDetails.name,
+              photoUrl: _placeDetails.photoUrl,
+              address: _placeDetails.address,
+              latitude: _placeDetails.latitude,
+              longitude: _placeDetails.longitude,
+              placeId: _placeDetails.placeId,
+              rating: rating,
+            );
+          });
+        } else {
+          throw Exception('Failed to load place details. Status: ${data['status']}');
+        }
+      } else {
+        throw Exception('Failed to load place details. Status Code: ${response.statusCode}');
+      }
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Place Details'),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              _placeDetails.photoUrl,
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _placeDetails.name,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Address: ${_placeDetails.address}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Rating: ${_placeDetails.rating}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Reviews:',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8),
+                  _reviews.isNotEmpty
+                      ? Column(
+                          children: _reviews.map((review) {
+                            return ListTile(
+                              title: Text('${review.authorName} - ${review.rating} stars'),
+                              subtitle: Text(review.text),
+                            );
+                          }).toList(),
+                        )
+                      : Text('No reviews available'),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<List<Place>> fetchNearbyTouristAttractions(Position position) async {
+    final apiKey = 'YOUR_API_KEY';
+    final radius = 5000;
+    final defaultImageUrl = 'YOUR_STATIC_IMAGE_URL';
+
+    final url =
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=$radius&type=tourist_attraction&key=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      if (data['status'] == 'OK' && data['results'] != null) {
+        List<Place> places = [];
+
+        for (var placeData in data['results']) {
+          final name = placeData['name'];
+          final photos = placeData['photos'] as List<dynamic>?;
+
+          double rating = placeData['rating'] ?? 0.0;
+
+          String photoUrl = defaultImageUrl;
+          if (photos != null && photos.isNotEmpty) {
+            final firstPhoto = photos[0] as Map<String, dynamic>?;
+            if (firstPhoto != null) {
+              final photoReference = firstPhoto['photo_reference'];
+              photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoReference&key=$apiKey';
+            }
+          }
+
+          final address = placeData['vicinity'];
+          final placeId = placeData['place_id'];
+          final latitude = placeData['geometry']['location']['lat'];
+          final longitude = placeData['geometry']['location']['lng'];
+
+          places.add(Place(
+            name: name,
+            photoUrl: photoUrl,
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            placeId: placeId,
+            rating: rating,
+          ));
+        }
+
+        return places;
+      } else {
+        throw Exception('Failed to load places. Status: ${data['status']}');
+      }
+    } else {
+      throw Exception('Failed to load places. Status Code: ${response.statusCode}');
+    }
+  }
+
+  double calculateDistance(
+      double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
+    return Geolocator.distanceBetween(
+      startLatitude,
+      startLongitude,
+      endLatitude,
+      endLongitude,
+    ) / 1000; // Convert meters to kilometers
+  }
+}

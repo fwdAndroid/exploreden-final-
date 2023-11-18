@@ -7,7 +7,7 @@
 
 
     <application
-        android:label="exploreden"
+        android:label="ExploreDen"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

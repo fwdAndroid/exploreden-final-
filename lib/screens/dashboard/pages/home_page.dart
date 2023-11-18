@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   late List<Place> places;
   Position? currentPosition;
-
+  int currentIndex = 0;
   @override
   void initState() {
     super.initState();

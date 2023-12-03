@@ -41,7 +41,10 @@ class _FavouritePageState extends State<FavouritePage> {
                   String value = snapshot.data![key]!;
 
                   return ListTile(
-                    title: Text('$key: $value'),
+                    title: Text(
+                      '$key: $value',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   );
                 },
               ),

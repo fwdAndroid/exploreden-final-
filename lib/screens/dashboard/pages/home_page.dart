@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,9 +26,24 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     places = [];
     currentPosition = null;
-    _loadPlaces();
+    requestLocationPermission();
+  }
+
+  Future<void> requestLocationPermission() async {
+    // Request location permission
+    PermissionStatus status = await Permission.location.request();
+    if (status.isGranted) {
+      // Permission granted, you can proceed with location-related tasks
+      _loadPlaces();
+      print('Location permission granted!');
+    } else {
+      // Permission denied, handle it accordingly (e.g., show a message or disable location features)
+      print('Location permission denied!');
+      showLocationPermissionDialog();
+    }
   }
 
   Future<void> _loadPlaces() async {
@@ -147,9 +162,10 @@ class _HomePageState extends State<HomePage> {
                 if (direction == CardSwiperDirection.left &&
                     currentIndex != null) {
                   // Handle card swiping, save to SharedPreferences when swiped left
-                  saveToSharedPreferences(places[currentIndex]);
+                  print(direction.name);
+                  print(places[currentIndex]);
                 }
-                // Continue with the default behavior
+                // Continue h the default behavior
                 return true;
               },
               controller: controller,
@@ -189,12 +205,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void saveToSharedPreferences(Place place) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // Use a unique key for each location
-    String key = 'location_${DateTime.now().millisecondsSinceEpoch}';
-    prefs.setString(key, place.name);
-    prefs.setString('$key.address', place.address);
-    prefs.setString('$key.photoUrl', place.photoUrl);
+  void showLocationPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Location Permission Required'),
+          content: Text(
+              'Please enable location permission in the app settings to continue.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                openAppSettings(); // Open the app settings
+              },
+              child: Text('Go to Settings'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

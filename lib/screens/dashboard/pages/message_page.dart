@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:exploreden/screens/detail/location_detail.dart';
 import 'package:exploreden/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -62,16 +61,16 @@ class _MessagePageState extends State<MessagePage> {
                                 child: Card(
                                   child: ListTile(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (builder) =>
-                                                  LocationDetail(
-                                                    name: data['name'],
-                                                    description:
-                                                        data['location'],
-                                                    address: data['address'],
-                                                  )));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (builder) =>
+                                      //             LocationDetail(
+                                      //               name: data['name'],
+                                      //               description:
+                                      //                   data['location'],
+                                      //               address: data['address'],
+                                      //             )));
                                     },
                                     title: Column(
                                       crossAxisAlignment:

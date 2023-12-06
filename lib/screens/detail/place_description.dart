@@ -4,6 +4,7 @@ import 'package:exploreden/models/place_model.dart';
 import 'package:exploreden/models/review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 
 class PlaceDetailsScreen extends StatefulWidget {
   final Place place;
@@ -79,15 +80,26 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                   SizedBox(height: 8),
                   _reviews.isNotEmpty
                       ? Column(
-                          children: _reviews.map((review) {
-                            return ListTile(
-                              title: Text(
-                                  '${review.authorName} - ${review.rating} stars'),
-                              subtitle: Text(review.text),
-                            );
-                          }).toList(),
+                          children: [
+                            Column(
+                              children: _reviews.map((review) {
+                                return ListTile(
+                                  title: Text(
+                                      '${review.authorName} - ${review.rating} stars'),
+                                  subtitle: Text(review.text),
+                                );
+                              }).toList(),
+                            ),
+                          ],
                         )
                       : Text('No reviews available'),
+
+                  ElevatedButton(
+                      onPressed: () async {
+                        await Share.share(
+                            'check out my app https://play.google.com/store/games?hl=en&gl=US');
+                      },
+                      child: Text("Share Location"))
                 ],
               ),
             ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FavouritePage extends StatefulWidget {
+class ViewLocationsScreen extends StatefulWidget {
   @override
-  _FavouritePageState createState() => _FavouritePageState();
+  State<ViewLocationsScreen> createState() => _ViewLocationsScreenState();
 }
 
-class _FavouritePageState extends State<FavouritePage> {
+class _ViewLocationsScreenState extends State<ViewLocationsScreen> {
   late String title;
 
   late String address;

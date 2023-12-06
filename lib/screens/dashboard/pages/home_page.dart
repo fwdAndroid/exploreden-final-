@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           : CardSwiper(
               onSwipe: (int previousIndex, int? currentIndex,
                   CardSwiperDirection direction) {
-                if (direction == CardSwiperDirection.left &&
+                if (direction == CardSwiperDirection.right &&
                     currentIndex != null) {
                   // Handle card swiping, save to SharedPreferences when swiped left
                   print(direction.name);

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:exploreden/models/place_model.dart';
 import 'package:exploreden/models/review_model.dart';
@@ -94,6 +95,12 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                         )
                       : Text('No reviews available'),
 
+                  TextButton(
+                      onPressed: () {
+                        _launchMapsUrl(widget.place.address);
+                      },
+                      child: Text('Check Address')),
+
                   ElevatedButton(
                       onPressed: () async {
                         await Share.share(
@@ -172,5 +179,17 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     final hour = (time ~/ 100).toString().padLeft(2, '0');
     final minute = (time % 100).toString().padLeft(2, '0');
     return '$hour:$minute';
+  }
+
+  void _launchMapsUrl(String address) async {
+    final encodedAddress = Uri.encodeFull(address);
+    final url =
+        'https://www.google.com/maps/search/?api=1&query=$encodedAddress';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -48,7 +48,7 @@ class _MainDashboardState extends State<MainDashboard> {
             ),
           ),
           BottomNavigationBarItem(
-            label: "Location",
+            label: "From Us",
             icon: Icon(
               Icons.location_pin,
               size: 25,
@@ -56,7 +56,7 @@ class _MainDashboardState extends State<MainDashboard> {
             ),
           ),
           BottomNavigationBarItem(
-            label: "Profile",
+            label: "Settings",
             icon: Image.asset(
               _currentIndex == 3 ? 'assets/bar.png' : 'assets/homepage 7.png',
               height: 25,

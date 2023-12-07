@@ -64,11 +64,11 @@ class _HomePageState extends State<HomePage> {
                   print(direction.name);
                   print(places[currentIndex]);
                   _storeDetails(places[currentIndex]);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ViewLocationsScreen()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => ViewLocationsScreen()),
+                  // );
                 }
                 // Continue h the default behavior
                 return true;

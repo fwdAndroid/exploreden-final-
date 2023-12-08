@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class LocationDetails extends StatefulWidget {
-  String name, description, address;
+  String name, description, address, image, rating, openinghrs;
   LocationDetails(
       {super.key,
       required this.address,
+      required this.rating,
+      required this.image,
+      required this.openinghrs,
       required this.description,
       required this.name});
 
@@ -19,7 +22,6 @@ class _LocationDetailsState extends State<LocationDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
             "Explorer Den Locations",
@@ -28,9 +30,9 @@ class _LocationDetailsState extends State<LocationDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Image.asset(
-              "assets/owl.png",
-              height: 200,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.image),
+              radius: 60,
             ),
           ),
           Padding(padding: EdgeInsets.all(10)),
@@ -84,6 +86,42 @@ class _LocationDetailsState extends State<LocationDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               widget.description,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Opening Hrs",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.openinghrs,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Location Ratings",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.rating,
               style: TextStyle(fontSize: 18),
             ),
           ),

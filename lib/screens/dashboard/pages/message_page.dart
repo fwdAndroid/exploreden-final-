@@ -23,8 +23,9 @@ class _MessagePageState extends State<MessagePage> {
         body: SizedBox(
           height: 225,
           child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection("location").snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection("locations")
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
@@ -44,7 +45,7 @@ class _MessagePageState extends State<MessagePage> {
                     itemBuilder: (BuildContext context, int index) {
                       return StreamBuilder<Object>(
                           stream: FirebaseFirestore.instance
-                              .collection("location")
+                              .collection("locations")
                               .snapshots(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
@@ -67,10 +68,20 @@ class _MessagePageState extends State<MessagePage> {
                                           MaterialPageRoute(
                                               builder: (builder) =>
                                                   LocationDetails(
-                                                    name: data['name'],
-                                                    description:
-                                                        data['location'],
-                                                    address: data['address'],
+                                                    openinghrs: data[
+                                                        'locationOpeningHrs'],
+                                                    image:
+                                                        data['locationPhoto'],
+                                                    rating:
+                                                        data['locationRating'],
+                                                    name: data['locationName']
+                                                        .toString(),
+                                                    description: data[
+                                                            'locationDescription']
+                                                        .toString(),
+                                                    address:
+                                                        data['locationAddress']
+                                                            .toString(),
                                                   )));
                                     },
                                     title: Column(
@@ -78,7 +89,7 @@ class _MessagePageState extends State<MessagePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text("Location Name"),
-                                        Text(data['name'])
+                                        Text(data['locationName'])
                                       ],
                                     ),
                                     trailing: Icon(

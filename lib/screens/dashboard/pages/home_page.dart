@@ -245,13 +245,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _storeDetails(Place place) async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
     var uuid = Uuid().v4();
-    // // Store details in SharedPreferences
-    // prefs.setString('title', place.name);
-    // prefs.setString('address', place.address);
-    // prefs.setString('photoReference', place.photoUrl);
-
     await FirebaseFirestore.instance.collection("saved").doc(uuid).set({
       "uuid": uuid,
       "id": FirebaseAuth.instance.currentUser!.uid,

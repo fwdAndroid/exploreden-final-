@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:exploreden/utils/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:exploreden/models/place_model.dart';
@@ -95,11 +96,33 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                         )
                       : Text('No reviews available'),
 
-                  TextButton(
-                      onPressed: () {
+                  Card(
+                    child: ListTile(
+                      trailing: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: mainColor, shape: BoxShape.circle),
+                        child: Center(
+                          child: Text(
+                            "Go",
+                            style: TextStyle(color: colorWhite, fontSize: 17),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(_placeDetails.photoUrl),
+                      ),
+                      title: Text(
+                        _placeDetails.name,
+                      ),
+                      subtitle: Text(_placeDetails.address),
+                      onTap: () {
                         _launchMapsUrl(widget.place.address);
                       },
-                      child: Text('Check Address')),
+                    ),
+                  ),
 
                   ElevatedButton(
                       onPressed: () async {

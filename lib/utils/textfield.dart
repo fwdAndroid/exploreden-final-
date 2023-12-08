@@ -15,6 +15,8 @@ class InputText extends StatefulWidget {
   final String? textPlaceholder;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final int? max;
+  final int? maxLines;
   final String? initialValue;
   final bool enabled;
   final TextEditingController? controller;
@@ -25,9 +27,11 @@ class InputText extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
     this.validator,
+    this.maxLines,
     this.onChanged,
     this.onEditingComplete,
     this.onSaved,
+    this.max,
     this.focusNode,
     this.onTap,
     this.textInputAction = TextInputAction.next,
@@ -71,6 +75,8 @@ class _InputTextState extends State<InputText> {
       controller: widget.controller,
       enabled: widget.enabled,
       focusNode: _focusNode,
+      maxLength: widget.maxLines,
+      maxLines: widget.max,
       decoration: InputDecoration(
           suffixIcon: widget.suffixIcon,
           prefix: widget.prefixIcon,

@@ -48,6 +48,7 @@ dependencies:
   social_login_buttons: ^1.0.7
   swipe_cards: ^2.0.0+1
   swipe_to: ^1.0.2
+  url_launcher: ^6.2.1
   uuid: ^4.1.0
 
 dev_dependencies:

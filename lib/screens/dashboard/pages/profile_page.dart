@@ -7,6 +7,7 @@ import 'package:exploreden/utils/colors.dart';
 import 'package:exploreden/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -16,6 +17,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final Uri _url = Uri.parse(
+      'https://drive.google.com/file/d/1j2QbtUBiiCPBE4cAJwSDet_pGxmOtaDZ/view');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +90,23 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     title: Text(
                       "Contact Us",
+                      style: TextStyle(
+                        color: colorBlack,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    color: mainColor,
+                  ),
+                  ListTile(
+                    onTap: _launchUrl,
+                    trailing: Icon(
+                      Icons.privacy_tip,
+                      color: mainColor,
+                    ),
+                    title: Text(
+                      "Privay Policy",
                       style: TextStyle(
                         color: colorBlack,
                         fontSize: 16,
@@ -276,5 +297,11 @@ class _ProfilePageState extends State<ProfilePage> {
             }),
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }

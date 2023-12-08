@@ -44,7 +44,7 @@ class _NotifyState extends State<Notify> {
                   Container(
                     margin: EdgeInsets.only(left: 10),
                     child: Text(
-                      "User Name",
+                      "Name",
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -65,7 +65,7 @@ class _NotifyState extends State<Notify> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Subject",
+                    "Email",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,
@@ -90,6 +90,7 @@ class _NotifyState extends State<Notify> {
                         fontSize: 12),
                   ),
                   InputText(
+                    max: 5,
                     controller: dse,
                   ),
                   const SizedBox(

@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exploreden/models/place_model.dart';
-import 'package:exploreden/screens/dashboard/pages/saved_location.dart';
 import 'package:exploreden/screens/detail/place_description.dart';
 import 'package:exploreden/utils/card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -244,12 +245,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _storeDetails(Place place) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    var uuid = Uuid().v4();
+    // // Store details in SharedPreferences
+    // prefs.setString('title', place.name);
+    // prefs.setString('address', place.address);
+    // prefs.setString('photoReference', place.photoUrl);
 
-    // Store details in SharedPreferences
-    prefs.setString('title', place.name);
-    prefs.setString('address', place.address);
-    prefs.setString('photoReference', place.photoUrl);
+    await FirebaseFirestore.instance.collection("saved").doc(uuid).set({
+      "uuid": uuid,
+      "id": FirebaseAuth.instance.currentUser!.uid,
+      "title": place.name,
+      "address": place.address,
+      "photoReference": place.photoUrl,
+      "rating": place.rating,
+      "placeid": place.placeId
+    });
 
     // Show a confirmation snackbar
     ScaffoldMessenger.of(context).showSnackBar(

@@ -30,7 +30,7 @@ class _AboutUsState extends State<AboutUs> {
             return PDFView(
               filePath: snapshot.data!,
               enableSwipe: true,
-              swipeHorizontal: true,
+              swipeHorizontal: false,
               autoSpacing: false,
               pageSnap: true,
               onError: (error) {

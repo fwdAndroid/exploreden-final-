@@ -29,7 +29,7 @@ class _AdvertiseState extends State<Advertise> {
             return PDFView(
               filePath: snapshot.data!,
               enableSwipe: true,
-              swipeHorizontal: true,
+              swipeHorizontal: false,
               autoSpacing: false,
               pageSnap: true,
               onError: (error) {

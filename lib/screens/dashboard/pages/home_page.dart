@@ -146,12 +146,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Place>> fetchNearbyPlaces(Position position) async {
     final apiKey = 'AIzaSyB9ovPkJ-s1cXezeqrQRUxewuWSYNyjdPo';
-    final radius = 5000; // You can adjust the radius as needed.
+    final radius = 11000; // You can adjust the radius as needed.
     final defaultImageUrl =
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM_Qhi5UgadnISebC83xwnoq2G-OYSPu5WR0m6U4y5w&s'; // Replace with your actual static image URL
 
     final url =
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=$radius&key=$apiKey';
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=$radius&type=tourist_attraction&key=$apiKey';
 
     final response = await http.get(Uri.parse(url));
     print('Response Code: ${response.statusCode}');

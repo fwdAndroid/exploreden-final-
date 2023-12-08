@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exploreden/screens/detail/favourite_details.dart';
+import 'package:exploreden/screens/detail/location_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +63,22 @@ class _FavouritePageState extends State<FavouritePage> {
                                 padding: const EdgeInsets.all(4.0),
                                 child: Card(
                                   child: ListTile(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (builder) =>
+                                                  FavouriteDetail(
+                                                    image:
+                                                        data['photoReference'],
+                                                    rating: data['rating']
+                                                        .toString(),
+                                                    name: data['title']
+                                                        .toString(),
+                                                    address: data['address']
+                                                        .toString(),
+                                                  )));
+                                    },
                                     leading: CircleAvatar(
                                       backgroundImage:
                                           NetworkImage(data['photoReference']),

@@ -41,48 +41,40 @@ class _LocationDetailsState extends State<LocationDetails> {
           Padding(padding: EdgeInsets.all(10)),
           Card(
             child: ListTile(
-                leading: Icon(
-                  Icons.location_pin,
-                  color: mainColor,
-                ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Location Name",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18),
-                    ),
-                    Text(
-                      widget.name,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
-                )),
+              leading: Icon(
+                Icons.location_pin,
+                color: mainColor,
+              ),
+              title: Text(
+                widget.name,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
           ),
           Card(
             child: ListTile(
-                leading: Icon(
-                  Icons.location_city,
-                  color: mainColor,
-                ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Location Address",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18),
-                    ),
-                    Text(
-                      widget.address,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ],
+              leading: Icon(
+                Icons.location_city,
+                color: mainColor,
+              ),
+              title: Text(
+                widget.address,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+          Card(
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.details,
+                    color: mainColor,
+                  ),
+                  title: Text(
+                    widget.description,
+                    style: TextStyle(fontSize: 18),
+                  ),
                 )),
           ),
           Row(
@@ -133,22 +125,6 @@ class _LocationDetailsState extends State<LocationDetails> {
                 ],
               )
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Location Details",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  widget.description,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
           ),
         ],
       ),

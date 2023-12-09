@@ -42,12 +42,6 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset("assets/filter.png", height: 20, width: 30),
-          )
-        ],
         title: Image.asset(
           "assets/owl.png",
           height: 40,
@@ -244,23 +238,38 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _storeDetails(Place place) async {
-    var uuid = Uuid().v4();
-    await FirebaseFirestore.instance.collection("saved").doc(uuid).set({
-      "uuid": uuid,
-      "id": FirebaseAuth.instance.currentUser!.uid,
-      "title": place.name,
-      "address": place.address,
-      "photoReference": place.photoUrl,
-      "rating": place.rating,
-      "placeid": place.placeId
-    });
+  Future<bool> isDataExists(String data) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('saved')
+        .where('title', isEqualTo: data)
+        .get();
 
-    // Show a confirmation snackbar
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Location Saved'),
-      ),
-    );
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  Future<void> _storeDetails(Place place) async {
+    String data = place.name;
+    var uuid = Uuid().v4();
+    if (isDataExists(data) == true) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Place already added")));
+    } else {
+      await FirebaseFirestore.instance.collection("saved").doc(uuid).set({
+        "uuid": uuid,
+        "id": FirebaseAuth.instance.currentUser!.uid,
+        "title": place.name,
+        "address": place.address,
+        "photoReference": place.photoUrl,
+        "rating": place.rating,
+        "placeid": place.placeId
+      });
+
+      // Show a confirmation snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Location Saved'),
+        ),
+      );
+    }
   }
 }

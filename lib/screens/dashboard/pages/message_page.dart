@@ -61,6 +61,7 @@ class _MessagePageState extends State<MessagePage> {
                             return Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Card(
+                                  color: mainColor,
                                   child: ListTile(
                                     onTap: () {
                                       Navigator.push(
@@ -84,13 +85,9 @@ class _MessagePageState extends State<MessagePage> {
                                                             .toString(),
                                                   )));
                                     },
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("Location Name"),
-                                        Text(data['locationName'])
-                                      ],
+                                    title: Text(
+                                      data['locationName'],
+                                      style: TextStyle(color: colorWhite),
                                     ),
                                     trailing: Icon(
                                       Icons.arrow_forward_ios,

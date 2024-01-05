@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: places.isEmpty
-          ? Center(child: Text("Places Loading"))
+          ? Center(child: Text("Places are Loading Please wait....."))
           : CardSwiper(
               onSwipe: (int previousIndex, int? currentIndex,
                   CardSwiperDirection direction) {
@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
                     currentIndex != null) {
                   _storeDetails(places[currentIndex]);
                 }
+                // Continue h the default behavior
                 return true;
               },
               controller: controller,
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return GestureDetector(
                   onTap: () {
+                    print("click");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -103,7 +105,6 @@ class _HomePageState extends State<HomePage> {
       _loadPlaces();
       print('Location permission granted!');
     } else {
-      print('Location permission denied!');
       showLocationPermissionDialog();
     }
   }
@@ -126,7 +127,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<List<Place>> fetchNearbyPlaces(Position position) async {
-    final apiKey = 'AIzaSyB9ovPkJ-s1cXezeqrQRUxewuWSYNyjdPo';
+    final apiKey = 'AIzaSyAAyFZQqBciWMw63iTXE4qxJ-yCgV3nRnc';
     final radius = 11000; // You can adjust the radius as needed.
     final defaultImageUrl =
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM_Qhi5UgadnISebC83xwnoq2G-OYSPu5WR0m6U4y5w&s'; // Replace with your actual static image URL

@@ -49,23 +49,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: places.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Text("Places Loading"))
           : CardSwiper(
               onSwipe: (int previousIndex, int? currentIndex,
                   CardSwiperDirection direction) {
                 if (direction == CardSwiperDirection.right &&
                     currentIndex != null) {
-                  // Handle card swiping, save to SharedPreferences when swiped left
-                  print(direction.name);
-                  print(places[currentIndex]);
                   _storeDetails(places[currentIndex]);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => ViewLocationsScreen()),
-                  // );
                 }
-                // Continue h the default behavior
                 return true;
               },
               controller: controller,
@@ -78,7 +69,6 @@ class _HomePageState extends State<HomePage> {
               ) {
                 return GestureDetector(
                   onTap: () {
-                    print("click");
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -108,14 +98,11 @@ class _HomePageState extends State<HomePage> {
   //Fucntions
 
   Future<void> requestLocationPermission() async {
-    // Request location permission
     PermissionStatus status = await Permission.location.request();
     if (status.isGranted) {
-      // Permission granted, you can proceed with location-related tasks
       _loadPlaces();
       print('Location permission granted!');
     } else {
-      // Permission denied, handle it accordingly (e.g., show a message or disable location features)
       print('Location permission denied!');
       showLocationPermissionDialog();
     }
@@ -152,6 +139,7 @@ class _HomePageState extends State<HomePage> {
     print('Response Body: ${response.body}');
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      print(data);
 
       if (data['status'] == 'OK' && data['results'] != null) {
         List<Place> places = [];

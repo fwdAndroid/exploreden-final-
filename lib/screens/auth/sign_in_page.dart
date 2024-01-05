@@ -20,65 +20,107 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool _isloading = false;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 395,
-              height: 439,
-              decoration: ShapeDecoration(
-                shadows: [
-                  BoxShadow(
-                      blurRadius: 0.2, spreadRadius: 0.5, color: Colors.grey)
-                ],
-                color: colorWhite,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(150),
-                    bottomRight: Radius.circular(150),
-                  ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            width: 395,
+            height: 439,
+            decoration: ShapeDecoration(
+              shadows: [
+                BoxShadow(
+                    blurRadius: 0.2, spreadRadius: 0.5, color: Colors.grey)
+              ],
+              color: colorWhite,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(150),
+                  bottomRight: Radius.circular(150),
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/owl.png",
-                    width: 150,
-                    height: 150,
-                  ),
-                  Text(
-                    "Welcome To Explorer Den",
-                    style: TextStyle(
-                        color: mainColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
             ),
-            const SizedBox(
-              height: 50,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/owl.png",
+                  width: 150,
+                  height: 150,
+                ),
+                Text(
+                  "Welcome To Explorer Den",
+                  style: TextStyle(
+                      color: mainColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            _isloading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SocialLoginButton(
-                      buttonType: SocialLoginButtonType.google,
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          _isloading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SocialLoginButton(
+                    buttonType: SocialLoginButtonType.google,
+                    onPressed: () async {
+                      setState(() {
+                        _isloading = true;
+                      });
+                      await DatabaseMethods()
+                          .signInWithGoogle()
+                          .then((value) async {
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .set({
+                          "photoURL": FirebaseAuth
+                              .instance.currentUser!.photoURL
+                              .toString(),
+                          "email": FirebaseAuth.instance.currentUser!.email,
+                          "name":
+                              FirebaseAuth.instance.currentUser!.displayName,
+                          "phoneNumber": FirebaseAuth
+                              .instance.currentUser!.phoneNumber
+                              .toString(),
+                          "uid": FirebaseAuth.instance.currentUser!.uid
+                        });
+                      });
+                      setState(() {
+                        _isloading = false;
+                      });
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => InterestScreen()));
+                    },
+                    imageWidth: 20,
+                  ),
+                ),
+          //Apple
+          isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SocialLoginButton(
+                      buttonType: SocialLoginButtonType.apple,
                       onPressed: () async {
                         setState(() {
-                          _isloading = true;
+                          isLoading = true;
                         });
                         await DatabaseMethods()
-                            .signInWithGoogle()
+                            .signInWithApple()
                             .then((value) async {
                           await FirebaseFirestore.instance
                               .collection("users")
@@ -95,20 +137,17 @@ class _SignInPageState extends State<SignInPage> {
                                 .toString(),
                             "uid": FirebaseAuth.instance.currentUser!.uid
                           });
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (builder) => InterestScreen()));
                         });
-                        setState(() {
-                          _isloading = false;
-                        });
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) => InterestScreen()));
-                      },
-                      imageWidth: 20,
-                    ),
-                  ),
-          ],
-        ),
+                      }),
+                ),
+        ]),
       ),
     );
   }

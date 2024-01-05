@@ -28,9 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  advance_pdf_viewer: ^2.0.1
   change_app_package_name: ^1.1.0
-  cloud_firestore: ^4.10.0
+  cloud_firestore: ^4.13.6
+  crypto: ^3.0.3
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.11.0
   firebase_core: ^2.18.0
@@ -50,12 +50,12 @@ dependencies:
   permission_handler: ^11.0.1
   share_plus: ^2.0.4
   shared_preferences: ^2.2.2
+  sign_in_with_apple: ^5.0.0
   social_login_buttons: ^1.0.7
   swipe_cards: ^2.0.0+1
   swipe_to: ^1.0.2
   url_launcher: ^6.2.1
   uuid: ^4.1.0
- 
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -75,8 +75,8 @@ flutter_launcher_icons:
     generate: true
     image_path: "path/to/image.png"
 dev_dependencies:
-  flutter_lints: ^2.0.0
   flutter_launcher_icons: "^0.13.1"
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
 

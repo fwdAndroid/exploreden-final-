@@ -42,7 +42,7 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     Center(
                       child: Image.asset(
-                        "assets/owl.png",
+                        "assets/logonew.png",
                         height: 300,
                       ),
                     ),

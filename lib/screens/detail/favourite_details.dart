@@ -1,6 +1,8 @@
 import 'package:exploreden/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FavouriteDetail extends StatefulWidget {
   String name, address, image, rating;
@@ -106,8 +108,57 @@ class _FavouriteDetailState extends State<FavouriteDetail> {
                   ],
                 )),
           ),
+          Card(
+            child: ListTile(
+              trailing: Container(
+                height: 40,
+                width: 40,
+                decoration:
+                    BoxDecoration(color: mainColor, shape: BoxShape.circle),
+                child: Center(
+                  child: Text(
+                    "Go",
+                    style: TextStyle(color: colorWhite, fontSize: 17),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(widget.image),
+              ),
+              title: Text(
+                widget.name,
+              ),
+              subtitle: Text(
+                widget.address,
+              ),
+              onTap: () {
+                _launchMapsUrl(
+                  widget.address,
+                );
+              },
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () async {
+                await Share.share(
+                    'check out my app https://play.google.com/store/games?hl=en&gl=US');
+              },
+              child: Text("Share Location"))
         ],
       ),
     );
+  }
+
+  void _launchMapsUrl(String address) async {
+    final encodedAddress = Uri.encodeFull(address);
+    final url =
+        'https://www.google.com/maps/search/?api=1&query=$encodedAddress';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

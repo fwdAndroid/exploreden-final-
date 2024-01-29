@@ -33,10 +33,17 @@ class _MessagePageState extends State<MessagePage> {
                   );
                 }
                 if (snapshot.data!.docs.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "No Locations Added by the Explorer Den Found yet",
-                      style: TextStyle(color: Colors.white),
+                  return Align(
+                    alignment: AlignmentDirectional.center,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "No Locations Added by the Admin",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
                     ),
                   );
                 }

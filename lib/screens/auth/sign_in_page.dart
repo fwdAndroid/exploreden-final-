@@ -47,7 +47,7 @@ class _SignInPageState extends State<SignInPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/owl.png",
+                  "assets/logonew.png",
                   width: 150,
                   height: 150,
                 ),

@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:exploreden/screens/dashboard/main_dashboard.dart';
 import 'package:exploreden/utils/colors.dart';
 import 'package:exploreden/utils/groupstyle.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InterestScreen extends StatefulWidget {
   const InterestScreen({super.key});
@@ -12,6 +15,65 @@ class InterestScreen extends StatefulWidget {
 }
 
 class _InterestScreenState extends State<InterestScreen> {
+  // Save selected value
+  addStringToSF(String selectedValue) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var keywords = prefs.getString('InterestKey');
+    // var keywords = prefs.getStringList('InterestKey');
+    List<String> keywords = prefs.getStringList('InterestKey') ?? [];
+
+    if (keywords.isNotEmpty) {
+      if (keywords.contains(selectedValue)) {
+      } else {
+        keywords.add(selectedValue);
+        prefs.setStringList('InterestKey', keywords);
+      }
+    } else {
+      keywords.add(selectedValue);
+      prefs.setStringList('InterestKey', keywords);
+    }
+//     keywords.isNotEmpty
+//         ? keywords.contains(selectedValue)
+//             ? ''
+//             : () {
+//                 //  prefs.setString('InterestKey', '$keywords | $selectedValue')
+
+//                 keywords.add(selectedValue);
+//                 prefs.setStringList('InterestKey', keywords);
+//                 itemData.add(selectedValue);
+//                 prefs.setStringList("Data", itemData);
+//               }
+//         : () {
+//             log("hello");
+// // prefs.setString('InterestKey', '$selectedValue');
+//             keywords.add(selectedValue);
+//             log('===========selectedValue==============> $selectedValue');
+//             log('===========keyW==============> $keywords');
+
+//             prefs.setStringList('InterestKey', keywords);
+//           };
+    // prefs.getString('InterestKey');
+    prefs.getStringList('InterestKey');
+    log('===========list==============> ${prefs.getStringList('InterestKey')}');
+  }
+
+  // Save selected value
+  removeStringToSF(String selectedValue) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var keywords = prefs.getString('InterestKey');
+    // var keywords = prefs.getStringList('InterestKey');
+    List<String> keywords = prefs.getStringList('InterestKey') ?? [];
+
+    if (keywords.isNotEmpty) {
+      if (keywords.contains(selectedValue)) {
+        keywords.remove(selectedValue);
+        prefs.setStringList('InterestKey', keywords);
+      }
+    }
+    prefs.getStringList('InterestKey');
+    log('===========list==============> ${prefs.getStringList('InterestKey')}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +116,14 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Escape Room",
@@ -87,6 +157,14 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Food",
@@ -121,6 +199,14 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Meditation",
@@ -128,7 +214,7 @@ class _InterestScreenState extends State<InterestScreen> {
                   "Massage",
                   "Wellness & Spas",
                   "Sauna & Relaxation",
-                  "Self-Care"
+                  "Self-Care",
                 ],
               ),
             ),
@@ -148,6 +234,14 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Zip Line",
@@ -180,13 +274,21 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Live Sports",
                   "Tournaments",
                   "Local Festivals",
                   "Concerts",
-                  "Theatre Performances"
+                  "Theatre Performances",
                 ],
               ),
             ),
@@ -206,6 +308,14 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Pottery Classes",
@@ -213,7 +323,7 @@ class _InterestScreenState extends State<InterestScreen> {
                   "Cooking Classes",
                   "Candle Making Workshops",
                   "Music Lessons",
-                  "Dance Classes"
+                  "Dance Classes",
                 ],
               ),
             ),
@@ -233,6 +343,14 @@ class _InterestScreenState extends State<InterestScreen> {
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: GroupButton(
                 options: ss,
+                onSelected: (value, index, isSelected) {
+                  log('===>$value =====>$index ======>$isSelected');
+                  if (isSelected) {
+                    addStringToSF(value);
+                  } else {
+                    removeStringToSF(value);
+                  }
+                },
                 isRadio: false,
                 buttons: [
                   "Farmer's Markets",

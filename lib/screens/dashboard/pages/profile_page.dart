@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exploreden/screens/auth/sign_in_page.dart';
 import 'package:exploreden/screens/dashboard/pages/favourite_page.dart';
 import 'package:exploreden/screens/noti/noti.dart';
+import 'package:exploreden/screens/profile/interest_screen.dart';
 import 'package:exploreden/screens/profile_pages/about_us.dart';
 import 'package:exploreden/screens/profile_pages/adverstise.dart';
 import 'package:exploreden/screens/profile_pages/faq.dart';
@@ -10,6 +11,7 @@ import 'package:exploreden/utils/colors.dart';
 import 'package:exploreden/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:open_filex/open_filex.dart';
 
@@ -206,6 +208,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     ListTile(
                       onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => InterestScreen()));
+                      },
+                      trailing: Icon(
+                        Icons.room_preferences,
+                        color: mainColor,
+                      ),
+                      title: Text(
+                        "Edit My Preference",
+                        style: TextStyle(
+                          color: colorBlack,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      color: mainColor,
+                    ),
+                    ListTile(
+                      onTap: () {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -224,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          "assets/owl.png",
+                                          "assets/logonew.png",
                                           height: 80,
                                           width: 80,
                                         ),
@@ -323,7 +347,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                       (builder) =>
                                                                           SignInPage()))
                                                         });
-
+                                                SharedPreferences preferences =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                await preferences.clear();
                                                 showSnakBar(
                                                     "Logout Successfully",
                                                     context);

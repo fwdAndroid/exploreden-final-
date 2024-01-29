@@ -45,7 +45,7 @@ class _IntroPageState extends State<IntroPage> {
                       fontWeight: FontWeight.bold),
                 ),
                 Image.asset(
-                  "assets/owl.png",
+                  "assets/logonew.png",
                   width: 150,
                   height: 150,
                 )

@@ -196,7 +196,7 @@ class _HomePageState extends State<HomePage> {
     const page_token =
         "AWU5eFiJ0TJXBgJ0hb09sowBSmhjjjf6BC7HPvS64fsgX1V1GOvvWYWRGc27Xm7fHsnJ0yPBMRveQgIJixdr8dDwNFFGDeqk51yGbR6cLmveujbrKffMiNzvYsaW594Ft-QzU0gYEebjgTAjtgkLxPTJ7pIP2XbhFoIXl-9iGGc3bHU2hDj_9uLJ0BX1dME509n3oiWw-8jupWYpWMoLI7PpgrgnVPbPnFnsjW0u73YKPehJ1zmTEPQ07mmahkhA4CbTCiq7B4HtwvL0XiD7FbjGem8fjFu9NekHKZxTnwEn68hF4v-QqQ6fiUVe8jg1xEnlmAUBy1j_EQ8JC2ul3igJEBjSt9Lo0QuS0LRe3NaIu739E8BEIlbPZHY5RezSFDEgQHXDog";
     const defaultImageUrl =
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdM_Qhi5UgadnISebC83xwnoq2G-OYSPu5WR0m6U4y5w&s'; // Replace with your actual static image URL\
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPmLDegiJeAVHq5pAlDH9c3se5PzEj2GHeRA&usqp=CAU'; // Replace with your actual static image URL\
     /*final url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=$radius&type=bar&key=$apiKey';*/
     /*Text search*/
     final url =
